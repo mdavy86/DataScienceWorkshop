@@ -2,6 +2,13 @@
 
 suppressPackageStartupMessages(library(testthat))
 
+## Removed in R-3.4.3
+with_top_env <- function (env, code)
+{
+  old <- options(topLevelEnvironment = env)
+  on.exit(options(old), add = TRUE)
+  code
+}
 
 ## function to run testthat tests on code in a 'tests/testthat' directory
 test_code <- function(path, package = NULL, filter = NULL, reporter="summary") {
@@ -19,7 +26,7 @@ test_code <- function(path, package = NULL, filter = NULL, reporter="summary") {
 
   reporter <- testthat:::find_reporter(reporter)
   env <- testthat:::test_pkg_env(test_path)
-  testthat:::with_top_env(env, {
+  with_top_env(env, {
     df <- test_dir(test_path, reporter = reporter, env = env,
                    filter = filter)
   })
