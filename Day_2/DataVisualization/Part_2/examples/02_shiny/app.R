@@ -13,7 +13,7 @@ server <- function(input, output) {    ## How server reacts to interface changes
 
   dset <- reactive({
     set.seed(42)
-    validate(need(isolate(input$bins>0), "1 or more bins required"))
+    validate(need(input$bins>0, "1 or more bins required"))
     validate(need(input$obs >0 & input$obs<=100000, "[ 1 to 100,000 ] observations required"))
     rnorm(input$obs)
   })
